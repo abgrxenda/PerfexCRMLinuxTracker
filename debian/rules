@@ -1,0 +1,5 @@
+#!/usr/bin/make -f
+# Minimal - no build step (plain Python, no compilation), dh handles
+# installing the paths listed in debian/otek-perfex-linux-tracker.install.
+%:
+	dh $@

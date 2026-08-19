@@ -1,0 +1,8 @@
+#!/bin/sh
+# Thin launcher: the actual app lives under /usr/lib/otek-perfex-linux-tracker/
+# (installed as a plain directory of .py files, not a proper pip-installed
+# package - see debian/otek-perfex-linux-tracker.install) - low-ceremony
+# packaging matching this project's other deliverables (.oxt, unpacked
+# browser extensions) rather than a full Python packaging setup for what
+# is an internal tool.
+exec python3 /usr/lib/otek-perfex-linux-tracker/perfex_tracker.py "$@"

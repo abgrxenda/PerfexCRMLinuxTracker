@@ -1,0 +1,10 @@
+perfex_tracker.py usr/lib/otek-perfex-linux-tracker/
+perfex_tracker/*.py usr/lib/otek-perfex-linux-tracker/perfex_tracker/
+bin/otek-perfex-linux-tracker usr/bin/
+debian/today.otek.perfex_linux_tracker.desktop usr/share/applications/
+icons/otek-perfex-linux-tracker.svg usr/share/icons/hicolor/512x512/apps/
+icons/otek-perfex-linux-tracker-symbolic.svg usr/share/icons/hicolor/symbolic/apps/
+icons/otek-perfex-linux-tracker-active.svg usr/share/icons/hicolor/22x22/apps/
+icons/otek-perfex-linux-tracker-inactive.svg usr/share/icons/hicolor/22x22/apps/
+icons/otek-perfex-linux-tracker-active.svg usr/lib/otek-perfex-linux-tracker/icons/
+icons/otek-perfex-linux-tracker-inactive.svg usr/lib/otek-perfex-linux-tracker/icons/

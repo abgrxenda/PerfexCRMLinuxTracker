@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Perfex Linux Tracker
+Comment=Passive focus-based time tracking for Perfex CRM
+Exec=otek-perfex-linux-tracker
+Icon=otek-perfex-linux-tracker
+Categories=Utility;Office;
+Terminal=false

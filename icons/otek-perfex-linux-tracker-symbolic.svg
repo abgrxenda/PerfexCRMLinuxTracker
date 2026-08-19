@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Symbolic (monochrome) icon for the GNOME top-bar tray indicator - see
+perfex_tracker/tray.py. GNOME/AyatanaAppIndicator recolor a "-symbolic"
+icon automatically to match the panel's light/dark foreground, so this
+deliberately uses a single flat fill color (#bebebe, the conventional
+symbolic-icon fill) rather than the app's colored icon
+(icons/otek-perfex-linux-tracker.svg) - a plain clock glyph, since this app's
+whole purpose is passive time tracking.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <path fill="#bebebe" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm0 1.5A5.5 5.5 0 1 1 8 13.5 5.5 5.5 0 0 1 8 2.5Z"/>
+  <path fill="#bebebe" d="M7.25 4.25v4.15l2.9 1.74.75-1.24-2.15-1.3V4.25Z"/>
+</svg>

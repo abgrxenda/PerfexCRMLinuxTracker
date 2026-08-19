@@ -1,0 +1,38 @@
+Source: otek-perfex-linux-tracker
+Section: utils
+Priority: optional
+Maintainer: Ömer Teknoloji <support@otek.today>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.6.0
+
+Package: otek-perfex-linux-tracker
+Architecture: all
+Depends: ${misc:Depends}, python3 (>= 3.10), python3-gi, gir1.2-gtk-4.0, gir1.2-glib-2.0, gir1.2-adw-1, libglib2.0-bin
+Recommends: gir1.2-gtk-3.0, gir1.2-ayatanaappindicator3-0.1
+Description: Passive focus-based time tracker for Perfex CRM
+ Tracks which window/browser tab has focus for the duration of a work
+ session against one Perfex CRM task, then submits the reconciled result
+ as a batch of timesheet entries when the session is stopped - instead of
+ requiring a manual stop/start on every context switch.
+ .
+ Requires the "window-calls-extended" GNOME Shell extension to read the
+ focused window on Wayland. That extension is not packaged in apt and is
+ NOT a dependency of this package (GNOME Shell extensions aren't
+ apt-installable) - install it separately from extensions.gnome.org or
+ https://github.com/hseliger/window-calls-extended. This app detects its
+ absence at startup and shows an actionable message rather than failing
+ silently.
+ .
+ The optional top-bar tray icon (Start/Stop/Show/Quit) runs in a small
+ separate GTK3 helper subprocess (perfex_tracker/tray_helper.py) using
+ AyatanaAppIndicator3 with a real Gtk.Menu - the same library combination
+ (confirmed by inspecting real working installations, not guessed) used
+ by the Upwork desktop app, VS Code, Zoom, and OnlyOffice/Jitsi on Linux.
+ It needs the gir1.2-gtk-3.0 and gir1.2-ayatanaappindicator3-0.1 packages
+ above AND GNOME Shell's own "AppIndicator and KStatusNotifierItem
+ Support" extension (also not apt-installable, install from
+ extensions.gnome.org) to actually render in the top bar. Neither
+ dependency is required for the app to run - without them it simply runs
+ window-only, no tray icon.
+ .
+ X11 is not supported - this app is Wayland-only by design.

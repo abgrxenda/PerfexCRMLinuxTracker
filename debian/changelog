@@ -1,0 +1,76 @@
+otek-perfex-linux-tracker (0.1.9) unstable; urgency=medium
+
+  * Fixed a duplicate window/tray icon bug: relaunching the app while an
+    instance was already running (visible or hidden in the tray) built a
+    second PerfexTrackerWindow and a second tray_helper.py subprocess
+    instead of re-presenting the existing window. do_activate() now
+    checks for an existing window first and simply presents it.
+
+ -- Ömer Teknoloji <support@otek.today>  Wed, 19 Aug 2026 00:00:00 +0000
+
+otek-perfex-linux-tracker (0.1.8) unstable; urgency=medium
+
+  * Fixed a duplicate window/tray icon bug: relaunching the app while an
+    instance was already running (visible or hidden in the tray) built a
+    second PerfexTrackerWindow and a second tray_helper.py subprocess
+    instead of re-presenting the existing window. do_activate() now
+    checks for an existing window first and simply presents it.
+
+ -- Ömer Teknoloji <support@otek.today>  Wed, 19 Aug 2026 00:00:00 +0000
+
+otek-perfex-linux-tracker (0.1.7) unstable; urgency=medium
+
+  * Project/Task dropdowns are now searchable, matching anywhere in the
+    name rather than only from the start (Gtk.DropDown search enabled
+    with Gtk.StringFilterMatchMode.SUBSTRING).
+
+ -- Ömer Teknoloji <support@otek.today>  Wed, 19 Aug 2026 00:00:00 +0000
+
+otek-perfex-linux-tracker (0.1.6) unstable; urgency=medium
+
+  * Fixed the taskbar/dock/Alt-Tab icon showing a generic placeholder:
+    the .desktop file's filename must exactly match the GTK Application's
+    application_id for GNOME Shell to resolve its Icon= for window-list
+    purposes (a different lookup than the app-grid entry, which was
+    already working). Renamed otek-perfex-linux-tracker.desktop to
+    today.otek.perfex_linux_tracker.desktop to match application_id
+    "today.otek.perfex_linux_tracker" - confirmed against
+    today.otek.currency_converter, whose own .desktop filename already
+    matches its application_id the same way.
+
+ -- Ömer Teknoloji <support@otek.today>  Tue, 18 Aug 2026 00:00:00 +0000
+
+otek-perfex-linux-tracker (0.1.5) unstable; urgency=medium
+
+  * Aggregation: unified window/browser-tab grouping to (app class, exact
+    title), with undersized groups merged into the largest sibling of the
+    same app class instead of being dropped, and a lone undersized group
+    with no sibling fully discarded as the only remaining drop case.
+  * GTK4 UI follows the system light/dark theme (no hardcoded colors);
+    close button now hides the window instead of quitting, matching the
+    Clockify-proven pattern, gated on the tray being available.
+  * Added optional top-bar tray indicator (Start/Stop/Show/Quit), backed
+    by a separate GTK3 AyatanaAppIndicator3 helper subprocess talking to
+    the main GTK4 process over stdin/stdout JSON - the same library
+    combination confirmed in use by Upwork, VS Code, Zoom, and
+    OnlyOffice/Jitsi on this platform.
+  * Tray icon now correctly resolves via an explicit icon theme path
+    (previously showed a generic placeholder) and swaps between
+    active/inactive PNGs by tracking state.
+  * Upgraded app icon to 512x512.
+
+ -- Ömer Teknoloji <support@otek.today>  Tue, 18 Aug 2026 00:00:00 +0000
+
+otek-perfex-linux-tracker (0.1.0) unstable; urgency=medium
+
+  * Initial release: passive focus-based session tracking against one
+    Perfex CRM task, reconciled and submitted as a batch of timesheet
+    entries at Stop via the taskimportperfexcrm module's new
+    /timesheets_bulk endpoint.
+  * Wayland-only window-focus polling via the window-calls-extended
+    GNOME Shell extension.
+  * Optional per-URL browser-tab granularity via a local HTTP server
+    fed by PerfexCRMChromeExtension/PerfexCRMFirefoxExtension.
+  * Crash-safe SQLite session log with orphaned-session recovery.
+
+ -- Ömer Teknoloji <support@otek.today>  Tue, 18 Aug 2026 00:00:00 +0000
