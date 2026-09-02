@@ -47,7 +47,7 @@ _DEFAULTS = {
     # doesn't require any setup beyond logging in:
     "poll_interval_seconds": 1.5,     # window-focus D-Bus poll cadence
     "http_port": 17845,               # 127.0.0.1-only tab-focus ingestion port
-    "min_group_seconds": 45,          # aggregation floor - see aggregator.py
+    "min_group_seconds": 120,          # aggregation floor - see aggregator.py
 }
 
 

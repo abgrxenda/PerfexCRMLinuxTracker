@@ -305,7 +305,9 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
         self.projects = projects
         model = Gtk.StringList()
         for p in projects:
-            model.append(p["name"])
+            status_name = p.get("status_name")
+            label = "%s - %s" % (p["name"], status_name) if status_name else p["name"]
+            model.append(label)
         self.dd_project.set_model(model)
         if projects:
             self._load_tasks_for_selected_project()
@@ -328,7 +330,9 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
         self.tasks = tasks
         model = Gtk.StringList()
         for t in tasks:
-            model.append(t["name"])
+            status_name = t.get("status_name")
+            label = "%s - %s" % (t["name"], status_name) if status_name else t["name"]
+            model.append(label)
         self.dd_task.set_model(model)
 
     def _on_tracker_error(self, exc):
@@ -465,7 +469,7 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
 
     def _push_session(self, session_id, task_id):
         segments = self.store.load_segments(session_id)
-        min_seconds = int(self.cfg.get("min_group_seconds") or 45)
+        min_seconds = int(self.cfg.get("min_group_seconds") or 120)
         entries = aggregate_session(segments, min_group_seconds=min_seconds)
 
         if not entries:

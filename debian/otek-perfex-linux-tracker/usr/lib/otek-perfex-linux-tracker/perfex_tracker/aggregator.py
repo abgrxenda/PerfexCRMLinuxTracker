@@ -40,7 +40,7 @@ groups" section for the full reasoning):
 from dataclasses import dataclass, field
 from collections import defaultdict
 
-DEFAULT_MIN_GROUP_SECONDS = 45
+DEFAULT_MIN_GROUP_SECONDS = 120
 
 # Small, optional prettification map for common window classes - falls
 # back to the raw class string for anything not listed. Not load-bearing;

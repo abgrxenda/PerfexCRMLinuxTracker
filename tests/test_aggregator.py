@@ -23,7 +23,7 @@ class TestAggregateSession(unittest.TestCase):
         # Twenty 3-second hops on the same (app_class, title) sum to one
         # accurate total, well over the floor.
         segments = [seg("code", "a.py", i * 10, i * 10 + 3) for i in range(20)]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].duration_seconds, 60)
         self.assertEqual(entries[0].switch_count, 20)
@@ -37,7 +37,7 @@ class TestAggregateSession(unittest.TestCase):
             seg("code", "a.py", 0, 65),
             seg("code", "b.py", 65, 85),
         ]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         self.assertEqual(len(entries), 1)
         entry = entries[0]
         self.assertEqual(entry.title, "a.py")
@@ -55,7 +55,7 @@ class TestAggregateSession(unittest.TestCase):
             seg("code", "b.py", 100, 150),
             seg("code", "c.py", 150, 160),
         ]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         by_title = {e.title: e for e in entries}
         self.assertEqual(set(by_title.keys()), {"a.py", "b.py"})
         self.assertEqual(by_title["a.py"].duration_seconds, 110)  # 100 + 10 absorbed
@@ -70,7 +70,7 @@ class TestAggregateSession(unittest.TestCase):
             seg("slack", "General", 0, 10),
             seg("slack", "DMs", 10, 25),
         ]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         self.assertEqual(len(entries), 1)
         entry = entries[0]
         self.assertEqual(entry.title, "DMs")
@@ -80,12 +80,12 @@ class TestAggregateSession(unittest.TestCase):
 
     def test_lone_undersized_group_with_no_sibling_is_dropped(self):
         segments = [seg("terminal", "bash", 0, 8)]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         self.assertEqual(entries, [])
 
     def test_floor_is_inclusive_at_exact_boundary(self):
-        segments = [seg("code", "a.py", 0, 45)]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        segments = [seg("code", "a.py", 0, 120)]
+        entries = aggregate_session(segments, min_group_seconds=120)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].merged_group_count, 1)
 
@@ -94,7 +94,7 @@ class TestAggregateSession(unittest.TestCase):
             seg("code", "a.py", 0, 60),     # qualifies
             seg("code", "b.py", 60, 65),    # undersized, but ends LATER than a.py's own last segment would suggest
         ]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         entry = entries[0]
         # total = 60 + 5 = 65, latest end among absorbed segments = 65
         self.assertEqual(entry.duration_seconds, 65)
@@ -109,7 +109,7 @@ class TestAggregateSession(unittest.TestCase):
             seg("firefox", "Loading...", 0, 30, source="browser-tab", url="https://a.example/x"),
             seg("firefox", "Loading...", 30, 70, source="browser-tab", url="https://b.example/y"),
         ]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0].title, "Loading...")
         self.assertEqual(entries[0].duration_seconds, 70)
@@ -117,7 +117,7 @@ class TestAggregateSession(unittest.TestCase):
 
     def test_browser_note_format(self):
         segments = [seg("firefox", "GitHub", 0, 60, source="browser-tab", url="https://github.com/foo/bar")]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         self.assertIn("GitHub", entries[0].note)
         self.assertIn("Firefox tab", entries[0].note)
         self.assertIn("1 visits", entries[0].note)
@@ -127,7 +127,7 @@ class TestAggregateSession(unittest.TestCase):
             seg("code", "a.py", 0, 60),
             seg("firefox", "GitHub", 60, 130, source="browser-tab", url="https://github.com"),
         ]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         titles = {e.app_class: e.title for e in entries}
         self.assertEqual(titles, {"code": "a.py", "firefox": "GitHub"})
 
@@ -141,7 +141,7 @@ class TestAggregateSession(unittest.TestCase):
 
     def test_to_bulk_entries_shape(self):
         segments = [seg("code", "a.py", 0, 60)]
-        entries = aggregate_session(segments, min_group_seconds=45)
+        entries = aggregate_session(segments, min_group_seconds=120)
         bulk = to_bulk_entries(entries)
         self.assertEqual(len(bulk), 1)
         self.assertEqual(set(bulk[0].keys()), {"start_time", "end_time", "note"})
