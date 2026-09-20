@@ -1,6 +1,6 @@
 # Perfex CRM Linux Tracker
 
-![version](https://img.shields.io/badge/version-1.0.2-2ea44f?style=flat-square)
+![version](https://img.shields.io/badge/version-1.0.6-2ea44f?style=flat-square)
 ![platform](https://img.shields.io/badge/platform-Linux%20%28Wayland%2FGNOME%29-lightgrey?style=flat-square&logo=linux&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3-3776AB?style=flat-square&logo=python&logoColor=white)
 ![GTK](https://img.shields.io/badge/GTK-4-4A86CF?style=flat-square&logo=gtk&logoColor=white)
