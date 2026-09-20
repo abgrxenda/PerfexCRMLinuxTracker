@@ -136,12 +136,18 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
         self.lbl_status = Gtk.Label(label="", wrap=True, halign=Gtk.Align.START)
         self.tracker_box.append(self.lbl_status)
 
-        self.tracker_box.append(Gtk.Label(label="Project", halign=Gtk.Align.START))
+        project_header = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        project_header.append(Gtk.Label(label="Project", halign=Gtk.Align.START, hexpand=True))
+        self.btn_refresh = Gtk.Button(icon_name="view-refresh-symbolic", tooltip_text="Refresh projects and tasks")
+        self.btn_refresh.add_css_class("flat")
+        self.btn_refresh.connect("clicked", self._on_refresh_clicked)
+        project_header.append(self.btn_refresh)
+        self.tracker_box.append(project_header)
         self.dd_project = Gtk.DropDown(model=Gtk.StringList())
         self.dd_project.set_enable_search(True)
         self.dd_project.set_expression(Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
         self.dd_project.set_search_match_mode(Gtk.StringFilterMatchMode.SUBSTRING)
-        self.dd_project.connect("notify::selected", self._on_project_changed)
+        self._project_changed_id = self.dd_project.connect("notify::selected", self._on_project_changed)
         self.tracker_box.append(self.dd_project)
 
         self.tracker_box.append(Gtk.Label(label="Task", halign=Gtk.Align.START))
@@ -149,6 +155,7 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
         self.dd_task.set_enable_search(True)
         self.dd_task.set_expression(Gtk.PropertyExpression.new(Gtk.StringObject, None, "string"))
         self.dd_task.set_search_match_mode(Gtk.StringFilterMatchMode.SUBSTRING)
+        self._task_changed_id = self.dd_task.connect("notify::selected", self._on_task_changed)
         self.tracker_box.append(self.dd_task)
 
         self.btn_start_stop = Gtk.Button(label="Start Tracking")
@@ -234,7 +241,28 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
         self.login_box.set_visible(False)
         self.tracker_box.set_visible(True)
         self.lbl_status.set_label("Logged in as %s." % (self.cfg.get("staff_name") or self.cfg.get("email") or "?"))
+        # Reopen on the last project/task worked on (saved by _start_tracking
+        # and by the user's own dropdown changes); ids the CRM no longer
+        # returns simply fall back to the first entry.
+        self._restore_project_id = self.cfg.get("last_project_id") or None
+        self._restore_task_id = self.cfg.get("last_task_id") or None
         self._run_async(lambda: api.list_projects(self.cfg["base_url"], self.cfg["token"]), self._on_projects_loaded, self._on_tracker_error)
+
+    def _on_refresh_clicked(self, _button):
+        # Re-fetch projects (picking up ones an admin added since launch)
+        # while keeping the current project/task selected if they still exist.
+        self.lbl_tracker_error.set_label("")
+        p_idx = self.dd_project.get_selected()
+        t_idx = self.dd_task.get_selected()
+        self._restore_project_id = self.projects[p_idx]["id"] if p_idx != Gtk.INVALID_LIST_POSITION and p_idx < len(self.projects) else None
+        self._restore_task_id = self.tasks[t_idx]["id"] if t_idx != Gtk.INVALID_LIST_POSITION and t_idx < len(self.tasks) else None
+        self.btn_refresh.set_sensitive(False)
+        self._run_async(lambda: api.list_projects(self.cfg["base_url"], self.cfg["token"]), self._on_projects_loaded, self._on_refresh_error)
+
+    def _on_refresh_error(self, exc):
+        self.btn_refresh.set_sensitive(True)
+        self._restore_project_id = self._restore_task_id = None
+        self._on_tracker_error(exc)
 
     # ------------------------------------------------------------------ #
     # Background-thread helper
@@ -308,12 +336,42 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
             status_name = p.get("status_name")
             label = "%s - %s" % (p["name"], status_name) if status_name else p["name"]
             model.append(label)
+        # Block the change handler while rebuilding - set_model()/set_selected()
+        # each emit notify::selected, and the explicit load below is the only
+        # task fetch wanted (otherwise stale loads can land out of order).
+        self.dd_project.handler_block(self._project_changed_id)
         self.dd_project.set_model(model)
+        restore_id = getattr(self, "_restore_project_id", None)
+        self._restore_project_id = None
+        # Default to the first entry so a project that no longer exists
+        # doesn't leave the selection stranded at a stale list position.
+        selected = 0
+        if restore_id is not None:
+            for i, p in enumerate(projects):
+                if p["id"] == restore_id:
+                    selected = i
+                    break
+        if projects:
+            self.dd_project.set_selected(selected)
+        self.dd_project.handler_unblock(self._project_changed_id)
+        if restore_id is not None and not any(p["id"] == restore_id for p in projects):
+            self._restore_task_id = None
         if projects:
             self._load_tasks_for_selected_project()
+        else:
+            self.btn_refresh.set_sensitive(True)
 
     def _on_project_changed(self, _dropdown, _pspec):
+        idx = self.dd_project.get_selected()
+        if idx != Gtk.INVALID_LIST_POSITION and idx < len(self.projects):
+            # A task saved for the previous project doesn't apply here.
+            self.cfg = config.save({"last_project_id": self.projects[idx]["id"], "last_task_id": ""})
         self._load_tasks_for_selected_project()
+
+    def _on_task_changed(self, _dropdown, _pspec):
+        idx = self.dd_task.get_selected()
+        if idx != Gtk.INVALID_LIST_POSITION and idx < len(self.tasks):
+            self.cfg = config.save({"last_task_id": self.tasks[idx]["id"]})
 
     def _load_tasks_for_selected_project(self):
         idx = self.dd_project.get_selected()
@@ -333,7 +391,17 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
             status_name = t.get("status_name")
             label = "%s - %s" % (t["name"], status_name) if status_name else t["name"]
             model.append(label)
+        self.dd_task.handler_block(self._task_changed_id)
         self.dd_task.set_model(model)
+        restore_id = getattr(self, "_restore_task_id", None)
+        self._restore_task_id = None
+        if restore_id is not None:
+            for i, t in enumerate(tasks):
+                if t["id"] == restore_id:
+                    self.dd_task.set_selected(i)
+                    break
+        self.dd_task.handler_unblock(self._task_changed_id)
+        self.btn_refresh.set_sensitive(True)
 
     def _on_tracker_error(self, exc):
         self.lbl_tracker_error.set_label(getattr(exc, "message", str(exc)))
@@ -355,6 +423,13 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
         if proj_idx == Gtk.INVALID_LIST_POSITION or task_idx == Gtk.INVALID_LIST_POSITION:
             self.lbl_tracker_error.set_label("Pick a project and a task first.")
             return
+
+        self.cfg = config.save({
+            "last_project_id": self.projects[proj_idx]["id"],
+            "last_project_name": self.projects[proj_idx]["name"],
+            "last_task_id": self.tasks[task_idx]["id"],
+            "last_task_name": self.tasks[task_idx]["name"],
+        })
 
         try:
             windowwatch.health_check()
@@ -393,6 +468,7 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
 
         self.dd_project.set_sensitive(False)
         self.dd_task.set_sensitive(False)
+        self.btn_refresh.set_sensitive(False)
         self.btn_start_stop.set_label("Stop Tracking")
         self.lbl_tracking.set_label("Tracking: %s / %s" % (project["name"], task["name"]))
         if self.tray is not None:
@@ -435,6 +511,7 @@ class PerfexTrackerWindow(Gtk.ApplicationWindow):
 
         self.dd_project.set_sensitive(True)
         self.dd_task.set_sensitive(True)
+        self.btn_refresh.set_sensitive(True)
         self.btn_start_stop.set_label("Start Tracking")
         self.lbl_tracking.set_label("Reconciling session...")
         if self.tray is not None:

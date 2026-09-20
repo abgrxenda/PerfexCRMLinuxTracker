@@ -10,10 +10,10 @@ a7961c9ded4b91f4c98a8fcaed5590ef  usr/lib/otek-perfex-linux-tracker/perfex_track
 d30c56bca88b5ade551ed07cbb9ca5ec  usr/lib/otek-perfex-linux-tracker/perfex_tracker/tabserver.py
 1f9d9dfca882cd6f3a8e6e11e378175b  usr/lib/otek-perfex-linux-tracker/perfex_tracker/tray.py
 2f2c9abeba87707b1226cdfb033ac6c5  usr/lib/otek-perfex-linux-tracker/perfex_tracker/tray_helper.py
-0e9248aa13d2d32e7164aa22b0156da6  usr/lib/otek-perfex-linux-tracker/perfex_tracker/ui.py
+50a9cc42ee46f8531293d049f0b00bd6  usr/lib/otek-perfex-linux-tracker/perfex_tracker/ui.py
 4f421f46fac466e84df6bcadc9037136  usr/lib/otek-perfex-linux-tracker/perfex_tracker/windowwatch.py
 0d020eb7874b0e6e4eb6090f04110ba5  usr/share/applications/today.otek.perfex_linux_tracker.desktop
-f1fc92b2962b9bae3e6edc64676da669  usr/share/doc/otek-perfex-linux-tracker/changelog.gz
+1281c992352fd7d5ba55a90b7402ecce  usr/share/doc/otek-perfex-linux-tracker/changelog.gz
 c1f5f7a48e975163912a29719543f7c2  usr/share/doc/otek-perfex-linux-tracker/copyright
 d338ab0fafae11048ae7f84c1d8b37f1  usr/share/icons/hicolor/22x22/apps/otek-perfex-linux-tracker-active.svg
 96021eeab4392343ea2f532a991bbd4b  usr/share/icons/hicolor/22x22/apps/otek-perfex-linux-tracker-inactive.svg

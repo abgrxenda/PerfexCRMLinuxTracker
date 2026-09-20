@@ -1,3 +1,22 @@
+otek-perfex-linux-tracker (1.0.6) stable; urgency=medium
+
+  * Remembers the last project and task: reopening the app (or logging in
+    again) selects the project/task you last worked on. Saved when you
+    pick from either dropdown and when you start tracking. If the saved
+    project no longer exists in the CRM, it falls back to the first entry.
+
+ -- Ömer Teknoloji <support@otek.today>  Sun, 20 Sep 2026 00:00:00 +0000
+
+otek-perfex-linux-tracker (1.0.5) stable; urgency=medium
+
+  * Added a refresh button next to the Project label that re-fetches the
+    project list (and tasks) without restarting the app, so projects an
+    admin adds while the app is open show up. The current project/task
+    stay selected if they still exist. Disabled while tracking, like the
+    dropdowns.
+
+ -- Ömer Teknoloji <support@otek.today>  Sun, 20 Sep 2026 00:00:00 +0000
+
 otek-perfex-linux-tracker (1.0.4) stable; urgency=medium
 
   * Project dropdown now shows "Project Name - Status" instead of just the
