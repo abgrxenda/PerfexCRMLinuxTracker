@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Currency Converter - Ömer Teknoloji</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;600;700&family=Cairo:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Brand */
+      --blue:        #149BD7;
+      --blue-dark:   #0d7fb3;
+      --blue-dim:    rgba(20,155,215,0.12);
+      --blue-border: rgba(20,155,215,0.25);
+      --gray:        #444444;
+      --gray-mid:    #6a6a6a;
+      --gray-light:  #9a9a9a;
+
+      /* Pantone palette */
+      --cotton:      #F8F7F4;
+      --dancer:      #F0EFE7;
+      --dancer-dark: #E6E5DC;
+
+      /* Typography */
+      --font-head:  'El Messiri', sans-serif;
+      --font-body:  'Cairo', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--cotton);
+      color: var(--gray);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+    .btn-download
+    /* ── NAV ──────────────────────────────────────────────────── */
+    navx {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248,247,244,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--dancer-dark);
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gray-light);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .hero-wrap {
+      background: var(--cotton);
+      border-bottom: 1px solid var(--dancer-dark);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-wrap::before {
+      content: '';
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle, rgba(20,155,215,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .herox {
+      max-width: min(1400px, 100dvw);
+      margin: 0 auto;
+      padding: 6rem 2.5rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--blue-dim);
+      border: 1px solid var(--blue-border);
+      color: var(--blue);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--blue);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .herox h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+      color: var(--gray);
+    }
+    .herox h1 span {
+      color: var(--blue);
+      display: block;
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--gray-mid);
+      max-width: 440px;
+      margin-bottom: 2.5rem;
+      line-height: 1.85;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+    }
+    .btn-download, .btn-download-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .btn-download {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(20,155,215,0.3);
+    }
+    .btn-download:hover, .btn-download:focus {
+      background: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(20,155,215,0.4);
+      color: #fff;
+    }
+    .btn-download-outline {
+      background: transparent;
+      color: var(--blue);
+      border: 1.5px solid var(--blue-border);
+    }
+    .btn-download-outline:hover {
+      border-color: var(--blue);
+      transform: translateY(-2px);
+      background: var(--blue-dim);
+    }
+    .hero-img-wrap {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--dancer-dark);
+      box-shadow: 0 16px 48px rgba(68,68,68,0.14), 0 2px 8px rgba(20,155,215,0.08);
+      line-height: 0;
+    }
+    .hero-img-wrap img { width: 100%; height: auto; display: block; }
+
+    /* ── SHARED SECTION ───────────────────────────────────────── */
+    .sec {
+      padding: 5rem 2.5rem;
+      border-bottom: 1px solid var(--dancer-dark);
+    }
+    .sec-inner { max-width: min(1400px, 100dvw); margin: 0 auto; }
+
+    .sec-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.6rem;
+    }
+    .sec h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 700;
+      color: var(--gray);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    .sec-desc {
+      color: var(--gray-mid);
+      font-size: 1rem;
+      max-width: 560px;
+      margin-bottom: 3rem;
+      line-height: 1.8;
+    }
+
+    /* ── SCREENSHOT COMPARE ───────────────────────────────────── */
+    .theme-shots {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .theme-shot { text-align: center; }
+    .theme-shot .hero-img-wrap { margin-bottom: 0.75rem; }
+    .theme-shot span {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray-light);
+    }
+
+    /* ── FEATURES ─────────────────────────────────────────────── */
+    .sec-features { background: var(--dancer); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--dancer-dark);
+      border: 1px solid var(--dancer-dark);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .feature-card {
+      background: var(--dancer);
+      padding: 2rem;
+      transition: background 0.2s;
+    }
+    .feature-card:hover { background: var(--cotton); }
+
+    .feature-icon {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .feature-card h3 {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+    .feature-card p {
+      font-size: 0.875rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+    }
+    .feature-card a { color: var(--blue); text-decoration: none; }
+
+    /* ── HOW TO USE ───────────────────────────────────────────── */
+    .sec-howto { background: var(--cotton); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .step {
+      background: var(--dancer);
+      border: 1px solid var(--dancer-dark);
+      border-radius: 10px;
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .step:hover {
+      border-color: var(--blue-border);
+      box-shadow: 0 4px 20px rgba(20,155,215,0.08);
+    }
+    .step-num {
+      font-family: var(--font-head);
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--dancer-dark);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    .step h3 {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+    .step p {
+      font-size: 0.875rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+    }
+    .step::after {
+      content: attr(data-n);
+      position: absolute;
+      top: -0.75rem;
+      right: 0.75rem;
+      font-size: 5.5rem;
+      font-family: var(--font-head);
+      font-weight: 700;
+      color: rgba(20,155,215,0.05);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* ── PLATFORM TABS ────────────────────────────────────────── */
+    .sec-install { background: var(--dancer); }
+
+    .platform-block {
+      margin-bottom: 3rem;
+    }
+    .platform-block:last-child { margin-bottom: 0; }
+
+    .platform-head {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .platform-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--blue-dim);
+      border: 1px solid var(--blue-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .platform-head h3 {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--gray);
+    }
+    .platform-head .platform-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: var(--blue-dim);
+      border: 1px solid var(--blue-border);
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-left: 0.25rem;
+    }
+
+    .install-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .install-card {
+      background: var(--cotton);
+      border: 1px solid var(--dancer-dark);
+      border-radius: 10px;
+      padding: 2rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      overflow: hidden;
+    }
+    .install-card:hover {
+      border-color: var(--blue-border);
+      box-shadow: 0 4px 20px rgba(20,155,215,0.08);
+    }
+    .install-card-head {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .install-num {
+      width: 32px; height: 32px;
+      background: var(--blue);
+      color: #fff;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .install-card h4 {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray);
+    }
+    .install-card > p {
+      font-size: 0.875rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    pre.code-block {
+      background: #1c1f26;
+      border: 1px solid #2e3340;
+      color: #d4d8e2;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      line-height: 1.8;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+    pre.code-block .comment { color: #52576b; }
+    pre.code-block .cmd     { color: var(--blue); }
+    pre.code-block .flag    { color: #7ec98a; }
+
+    .inline-code {
+      background: var(--blue-dim);
+      color: var(--blue);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      border: 1px solid var(--blue-border);
+    }
+    .install-note {
+      margin-top: 1.5rem;
+      font-size: 0.825rem;
+      color: var(--gray-light);
+    }
+    .install-note a { color: var(--blue); text-decoration: none; }
+
+    .platform-divider {
+      border: none;
+      border-top: 1px solid var(--dancer-dark);
+      margin: 3rem 0;
+    }
+
+    /* ── BROWSER EXTENSIONS ──────────────────────────────────── */
+    .sec-extensions { background: var(--cotton); }
+
+    .extensions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .ext-card {
+      background: var(--dancer);
+      border: 1px solid var(--dancer-dark);
+      border-radius: 10px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+    .ext-card:hover {
+      border-color: var(--blue-border);
+      box-shadow: 0 6px 24px rgba(20,155,215,0.1);
+      transform: translateY(-2px);
+    }
+    .ext-icon {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+    }
+    .ext-icon svg { width: 100%; height: 100%; }
+    .ext-info {
+      display: flex;
+      align-items: center;
+      /* flex-direction: column; */
+      gap: 0.4rem;
+      flex: 1;
+    }
+    .ext-info h3 {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--gray);
+    }
+    .ext-info p {
+      font-size: 0.875rem;
+      color: var(--gray-mid);
+      line-height: 1.7;
+      margin-bottom: 0.25rem;
+    }
+    .btn-ext {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--blue);
+      color: #fff;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      align-self: flex-start;
+      transition: background 0.2s;
+      box-shadow: 0 2px 10px rgba(20,155,215,0.25);
+    }
+    .ext-card:hover .btn-ext { background: var(--blue-dark); }
+
+    /* ── CTA BAND ─────────────────────────────────────────────── */
+    .cta-band {
+      background: var(--blue);
+      padding: 5rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .cta-band h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.75rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+    .cta-band p {
+      color: rgba(255,255,255,0.78);
+      font-size: 1rem;
+      margin-bottom: 2.25rem;
+      position: relative;
+    }
+    .cta-btn-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      position: relative;
+    }
+    .btn-download-white, .btn-download-white-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.9rem 2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+    }
+    .btn-download-white {
+      background: var(--cotton);
+      color: var(--blue-dark);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+    }
+    .btn-download-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+    }
+    .btn-download-white-outline {
+      background: transparent;
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.5);
+    }
+    .btn-download-white-outline:hover ,.btn-download-white-outline:focus{
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+      border-color: #fff;
+      color: #fff;
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    footer {
+      background: var(--dancer);
+      border-top: 1px solid var(--dancer-dark);
+      padding: 1.75rem 2.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--gray-light);
+    }
+    footer a { color: var(--blue); text-decoration: none; }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .features-grid  { grid-template-columns: repeat(2, 1fr); }
+      .steps          { grid-template-columns: repeat(2, 1fr); }
+      .install-steps  { grid-template-columns: 1fr; }
+      .theme-shots    { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .herox          { grid-template-columns: 1fr; gap: 2.5rem; padding: 3.5rem 1.5rem; }
+      .hero-img-wrap  { order: -1; }
+      .features-grid  { grid-template-columns: 1fr; }
+      .steps          { grid-template-columns: 1fr; }
+      .extensions-grid { grid-template-columns: 1fr; }
+      .nav-links      { display: none; }
+      .sec            { padding: 3.5rem 1.5rem; }
+      .btn-row, .cta-btn-row { flex-direction: column; }
+      navx            {display: none;}
+      .install-card,.ext-card   {padding: 1rem;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<navx>
+  <a class="nav-brand" href="https://otek.today"></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-to-use">How to Use</a></li>
+    <li><a href="#install">Install</a></li>
+    <li><a href="#download">Download</a></li>
+  </ul>
+</navx>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="herox">
+    <div class="hero-text">
+      <span class="hero-badge">Linux & Android · Free & Open</span>
+      <h1>Currency Converter<span>for Linux & Android</span></h1>
+      <p class="hero-sub">
+        A single Flutter app built for both desktop and mobile - live exchange
+        rates, a full ISO 4217 currency list, bi-directional conversion, and
+        an hourly rate cache. One codebase, native on both platforms.
+      </p>
+      <div class="btn-row">
+        <a class="btn-download" href="https://otek.today/files/otek-doviz-converter_1.0.14_amd64.deb">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download for Linux · .deb
+        </a>
+        <a class="btn-download-outline" href="https://otek.today/files/today.otek.doviz_converter-1.0.14.apk">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Download for Android · .apk
+        </a>
+      </div>
+    </div>
+    <div class="hero-img-wrap">
+      <img
+        src="https://otek.today/files/otek-doviz-converter-screen.png"
+        alt="Currency Converter running on Linux"
+        loading="eager"
+      />
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div id="features" class="sec sec-features">
+
+  <div class="sec-inner">
+    <span class="sec-label">What it does</span>
+    <h2>One app, two platforms,<br>zero compromises</h2>
+    <p class="sec-desc">Built with Flutter so the same interface, logic, and rate cache work identically whether you're on your desktop or in your pocket.</p>
+
+    <div class="theme-shots">
+      <div class="theme-shot">
+        <div class="hero-img-wrap">
+          <img src="https://otek.today/files/otek-doviz-converter-screen.png" alt="Currency Converter - light mode" loading="lazy" />
+        </div>
+        <span>Light Mode</span>
+      </div>
+      <div class="theme-shot">
+        <div class="hero-img-wrap">
+          <img src="https://otek.today/files/otek-doviz-converter-screen-dark.png" alt="Currency Converter - dark mode" loading="lazy" />
+        </div>
+        <span>Dark Mode</span>
+      </div>
+    </div>
+
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <span class="feature-icon">🌍</span>
+        <h3>Full ISO 4217 List</h3>
+        <p>Every world currency including precious metals (XAU, XAG, XPD, XPT) and special drawing rights, sorted alphabetically by code.</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">🔍</span>
+        <h3>Searchable Picker</h3>
+        <p>A search sheet filters by code or name as you type - jump straight to TRY or QAR without scrolling.</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">⇄</span>
+        <h3>Bi-directional Input</h3>
+        <p>Type in either amount field and the other recalculates live. A single tap swaps the currency pair.</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">⏱</span>
+        <h3>1-Hour Rate Cache</h3>
+        <p>Rates are fetched once per pair and cached locally for an hour - fast, light on data, and works offline right after.</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">🎨</span>
+        <h3>Light & Dark Themes</h3>
+        <p>Follows your system theme automatically on both Linux and Android - no toggle needed.</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">💾</span>
+        <h3>Remembers Your Pair</h3>
+        <p>The last currency pair you used is saved and restored automatically the next time you open the app.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- HOW TO USE -->
+<div id="how-to-use" class="sec sec-howto">
+  <div class="sec-inner">
+    <span class="sec-label">How to use</span>
+    <h2>Straightforward by design</h2>
+    <p class="sec-desc">Four interactions, that's all. Open it, pick your currencies, type a number, done.</p>
+    <div class="steps">
+
+      <div class="step" data-n="01">
+        <span class="step-num">01</span>
+        <h3>Pick your currencies</h3>
+        <p>Tap either currency button to open the search sheet. Type a code or name, then tap to select.</p>
+      </div>
+
+      <div class="step" data-n="02">
+        <span class="step-num">02</span>
+        <h3>Type an amount</h3>
+        <p>Enter a number in either field - the other recalculates instantly using the live rate.</p>
+      </div>
+
+      <div class="step" data-n="03">
+        <span class="step-num">03</span>
+        <h3>Swap if needed</h3>
+        <p>Tap the swap button between the fields to flip the pair and recalculate in one motion.</p>
+      </div>
+
+      <div class="step" data-n="04">
+        <span class="step-num">04</span>
+        <h3>Rates stay fresh</h3>
+        <p>Each pair is cached for 1 hour. The status line under the amounts shows the live rate and cache status.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- INSTALL -->
+<div id="install" class="sec sec-install">
+  <div class="sec-inner">
+    <span class="sec-label">Installation</span>
+    <h2>Pick your platform</h2>
+    <p class="sec-desc">Both builds come from the same Flutter codebase - install whichever fits your device, or both.</p>
+
+    <!-- LINUX -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <span class="platform-icon">🐧</span>
+        <h3>Linux</h3>
+        <span class="platform-badge">Primary · .deb</span>
+      </div>
+
+      <div class="install-steps">
+        <div class="install-card">
+          <div class="install-card-head">
+            <span class="install-num">1</span>
+            <h4>Download the package</h4>
+          </div>
+          <p>Grab the <span class="inline-code">.deb</span> file directly, or with <span class="inline-code">wget</span> in your terminal.</p>
+          <pre class="code-block"><span class="cmd">wget</span> https://otek.today/files/otek-doviz-converter_1.0.14_amd64.deb</pre>
+        </div>
+
+        <div class="install-card">
+          <div class="install-card-head">
+            <span class="install-num">2</span>
+            <h4>Install with apt</h4>
+          </div>
+          <p>Installs the app and pulls in any missing dependencies automatically.</p>
+          <pre class="code-block"><span class="cmd">sudo apt install</span> ./otek-doviz-converter_1.0.14_amd64.deb</pre>
+        </div>
+
+        <div class="install-card">
+          <div class="install-card-head">
+            <span class="install-num">3</span>
+            <h4>Launch it</h4>
+          </div>
+          <p>Find it in your application menu, or launch directly from the terminal.</p>
+          <pre class="code-block"><span class="cmd">otek-doviz-converter</span></pre>
+        </div>
+      </div>
+
+      <p class="install-note">
+        Built for amd64 (x86_64) systems. Debian, Ubuntu, Mint, Pop!_OS, and derivatives are supported.
+      </p>
+    </div>
+
+    <hr class="platform-divider" />
+
+    <!-- ANDROID -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <span class="platform-icon">📱</span>
+        <h3>Android</h3>
+        <span class="platform-badge">Secondary · .apk</span>
+      </div>
+
+      <div class="install-steps">
+        <div class="install-card">
+          <div class="install-card-head">
+            <span class="install-num">1</span>
+            <h4>Download the APK</h4>
+          </div>
+          <p>Tap the download button on this page from your Android device's browser.</p>
+          <pre class="code-block">today.otek.doviz_converter-1.0.14.apk</pre>
+        </div>
+
+        <div class="install-card">
+          <div class="install-card-head">
+            <span class="install-num">2</span>
+            <h4>Allow this source</h4>
+          </div>
+          <p>Since it's outside the Play Store, Android will ask permission to install from this source once.</p>
+          <pre class="code-block"><span class="comment">Settings ▸ Apps ▸ Special access ▸</span>
+<span class="comment">Install unknown apps ▸ allow your browser</span></pre>
+        </div>
+
+        <div class="install-card">
+          <div class="install-card-head">
+            <span class="install-num">3</span>
+            <h4>Install & open</h4>
+          </div>
+          <p>Tap the downloaded file to install, then open Currency Converter from your app drawer.</p>
+          <pre class="code-block"><span class="comment"># tap the .apk in your notifications</span>
+<span class="comment"># or Downloads app to install</span></pre>
+        </div>
+      </div>
+
+      <p class="install-note">
+        Not yet on Google Play - this direct APK is signed and safe, but Android will flag it as an unknown source until installed once.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- BROWSER EXTENSIONS -->
+<div id="extensions" class="sec sec-extensions">
+  <div class="sec-inner">
+    <span class="sec-label">Browser Extensions</span>
+    <h2>Also available in your browser</h2>
+    <p class="sec-desc">Prefer converting currencies without leaving your tab? The Ötek Currency Converter extension brings live rates to your browser - same engine, no installation, no account.</p>
+    <div class="extensions-grid">
+
+      <a class="ext-card" href="https://addons.mozilla.org/en-US/firefox/addon/%C3%B6tek-currency-converter/" target="_blank" rel="noopener">
+        <div class="ext-info">
+          <div class="ext-icon">
+            <!-- Firefox icon -->
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+            <svg
+              width="50"
+              height="50"
+              version="1.1"
+              id="svg50"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:svg="http://www.w3.org/2000/svg">
+              <defs
+                id="defs39">
+                <radialGradient
+                  id="g"
+                  cx="240.61284"
+                  cy="36.806652"
+                  r="170.02094"
+                  gradientTransform="matrix(0.10398125,0,0,0.1009857,-1.6662621,-1.3126966e-4)"
+                  fx="240.61284"
+                  fy="36.806652"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".1"
+                    stop-color="#ffe226"
+                    id="stop1" />
+                  <stop
+                    offset=".79"
+                    stop-color="#ff7139"
+                    id="stop2" />
+                </radialGradient>
+                <radialGradient
+                  id="c"
+                  cx="226.56297"
+                  cy="290.17783"
+                  r="554.14581"
+                  gradientTransform="matrix(0.11549259,0,0,0.09092029,-1.6662621,-1.3126966e-4)"
+                  fx="226.56297"
+                  fy="290.17783"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".3"
+                    stop-color="#960e18"
+                    id="stop3" />
+                  <stop
+                    offset=".35"
+                    stop-color="#b11927"
+                    stop-opacity=".74"
+                    id="stop4" />
+                  <stop
+                    offset=".43"
+                    stop-color="#db293d"
+                    stop-opacity=".34"
+                    id="stop5" />
+                  <stop
+                    offset=".5"
+                    stop-color="#f5334b"
+                    stop-opacity=".09"
+                    id="stop6" />
+                  <stop
+                    offset=".53"
+                    stop-color="#ff3750"
+                    stop-opacity="0"
+                    id="stop7" />
+                </radialGradient>
+                <radialGradient
+                  id="d"
+                  cx="395.44366"
+                  cy="-17.973478"
+                  r="210.2099"
+                  gradientTransform="matrix(0.07994448,0,0,0.1313489,-1.6662621,-1.3126966e-4)"
+                  fx="395.44366"
+                  fy="-17.973478"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".13"
+                    stop-color="#fff44f"
+                    id="stop8" />
+                  <stop
+                    offset=".53"
+                    stop-color="#ff980e"
+                    id="stop9" />
+                </radialGradient>
+                <radialGradient
+                  id="e"
+                  cx="206.27052"
+                  cy="373.24011"
+                  r="223.4966"
+                  gradientTransform="matrix(0.0994988,0,0,0.10553514,-1.6662621,-1.3126966e-4)"
+                  fx="206.27052"
+                  fy="373.24011"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".35"
+                    stop-color="#3a8ee6"
+                    id="stop10" />
+                  <stop
+                    offset=".67"
+                    stop-color="#9059ff"
+                    id="stop11" />
+                  <stop
+                    offset="1"
+                    stop-color="#c139e6"
+                    id="stop12" />
+                </radialGradient>
+                <radialGradient
+                  id="f"
+                  cx="271.62091"
+                  cy="200.9019"
+                  r="131.86298"
+                  gradientTransform="matrix(0.0994988,0,0,0.10553514,-1.6662621,-1.3126966e-4)"
+                  fx="271.62091"
+                  fy="200.9019"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".21"
+                    stop-color="#9059ff"
+                    stop-opacity="0"
+                    id="stop13" />
+                  <stop
+                    offset=".97"
+                    stop-color="#6e008b"
+                    stop-opacity=".6"
+                    id="stop14" />
+                </radialGradient>
+                <radialGradient
+                  id="b"
+                  cx="392.80673"
+                  cy="61.159756"
+                  r="554.14581"
+                  gradientTransform="matrix(0.11549259,0,0,0.09092029,-1.6662621,-1.3126966e-4)"
+                  fx="392.80673"
+                  fy="61.159756"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".13"
+                    stop-color="#ffbd4f"
+                    id="stop15" />
+                  <stop
+                    offset=".28"
+                    stop-color="#ff980e"
+                    id="stop16" />
+                  <stop
+                    offset=".47"
+                    stop-color="#ff3750"
+                    id="stop17" />
+                  <stop
+                    offset=".78"
+                    stop-color="#eb0878"
+                    id="stop18" />
+                  <stop
+                    offset=".86"
+                    stop-color="#e50080"
+                    id="stop19" />
+                </radialGradient>
+                <radialGradient
+                  id="h"
+                  cx="362.07501"
+                  cy="-81.709213"
+                  r="742.3869"
+                  gradientTransform="matrix(0.11369185,0,0,0.09236036,-1.6662621,-1.3126966e-4)"
+                  fx="362.07501"
+                  fy="-81.709213"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".11"
+                    stop-color="#fff44f"
+                    id="stop20" />
+                  <stop
+                    offset=".46"
+                    stop-color="#ff980e"
+                    id="stop21" />
+                  <stop
+                    offset=".72"
+                    stop-color="#ff3647"
+                    id="stop22" />
+                  <stop
+                    offset=".9"
+                    stop-color="#e31587"
+                    id="stop23" />
+                </radialGradient>
+                <radialGradient
+                  id="i"
+                  cx="475.58807"
+                  cy="-41.588268"
+                  r="779.90863"
+                  gradientTransform="matrix(0.07168529,0,0,0.14648221,-1.6662621,-1.3126966e-4)"
+                  fx="475.58807"
+                  fy="-41.588268"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset="0"
+                    stop-color="#fff44f"
+                    id="stop24" />
+                  <stop
+                    offset=".3"
+                    stop-color="#ff980e"
+                    id="stop25" />
+                  <stop
+                    offset=".57"
+                    stop-color="#ff3647"
+                    id="stop26" />
+                  <stop
+                    offset=".74"
+                    stop-color="#e31587"
+                    id="stop27" />
+                </radialGradient>
+                <radialGradient
+                  id="j"
+                  cx="239.79736"
+                  cy="99.006172"
+                  r="461.1138"
+                  gradientTransform="matrix(0.10509305,0,0,0.09991735,-1.6662621,-1.3126966e-4)"
+                  fx="239.79736"
+                  fy="99.006172"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".14"
+                    stop-color="#fff44f"
+                    id="stop28" />
+                  <stop
+                    offset=".48"
+                    stop-color="#ff980e"
+                    id="stop29" />
+                  <stop
+                    offset=".66"
+                    stop-color="#ff3647"
+                    id="stop30" />
+                  <stop
+                    offset=".9"
+                    stop-color="#e31587"
+                    id="stop31" />
+                </radialGradient>
+                <radialGradient
+                  id="k"
+                  cx="343.03802"
+                  cy="132.0125"
+                  r="528.89331"
+                  gradientTransform="matrix(0.11013017,0,0,0.09534735,-1.6662621,-1.3126966e-4)"
+                  fx="343.03802"
+                  fy="132.0125"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".09"
+                    stop-color="#fff44f"
+                    id="stop32" />
+                  <stop
+                    offset=".63"
+                    stop-color="#ff980e"
+                    id="stop33" />
+                </radialGradient>
+                <linearGradient
+                  id="a"
+                  x1="441.98419"
+                  y1="75.63131"
+                  x2="62.126282"
+                  y2="454.26938"
+                  gradientTransform="matrix(0.10247253,0,0,0.10247253,-1.6662621,-1.3126966e-4)"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".05"
+                    stop-color="#fff44f"
+                    id="stop34" />
+                  <stop
+                    offset=".37"
+                    stop-color="#ff980e"
+                    id="stop35" />
+                  <stop
+                    offset=".53"
+                    stop-color="#ff3647"
+                    id="stop36" />
+                  <stop
+                    offset=".7"
+                    stop-color="#e31587"
+                    id="stop37" />
+                </linearGradient>
+                <linearGradient
+                  id="l"
+                  x1="406.61136"
+                  y1="68.311989"
+                  x2="104.09252"
+                  y2="409.86551"
+                  gradientTransform="matrix(0.1024721,0,0,0.10247295,-1.6662621,-1.3126966e-4)"
+                  gradientUnits="userSpaceOnUse">
+                  <stop
+                    offset=".17"
+                    stop-color="#fff44f"
+                    stop-opacity=".8"
+                    id="stop38" />
+                  <stop
+                    offset=".6"
+                    stop-color="#fff44f"
+                    stop-opacity="0"
+                    id="stop39" />
+                </linearGradient>
+              </defs>
+              <path
+                d="m 48.199086,16.769369 c -1.088013,-2.532668 -3.291642,-5.26695 -5.022045,-6.131166 1.408322,2.671882 2.22342,5.352131 2.534876,7.352439 0,0.0039 0.0016,0.01371 0.0049,0.04032 C 42.886106,11.203023 38.086246,8.4497904 34.166797,2.4550164 33.968882,2.1518906 33.770446,1.8479583 33.577114,1.5275946 a 7.6786913,7.4310682 0 0 1 -0.275623,-0.5012111 4.5520485,4.4052537 0 0 1 -0.374268,-0.95826862 0.06520783,0.06310501 0 0 0 -0.05687,-0.06491953 0.08520768,0.0824599 0 0 0 -0.04698,0 c -0.0035,0.00120968 -0.0087,0.00514114 -0.0125,0.00655244 -0.0055,0.0021169 -0.0125,0.0069557 -0.01833,0.01008067 0.0028,-0.003629 0.0086,-0.01179439 0.01042,-0.01370971 C 26.51446,3.5702411 24.381143,10.163504 24.185103,13.462203 a 12.525842,12.121907 0 0 0 -6.889739,2.569361 7.4327557,7.1930635 0 0 0 -0.648433,-0.473791 11.59762,11.223619 0 0 1 -0.07021,-5.9205802 c -2.571647,1.1331682 -4.57184,2.9244022 -6.025995,4.5060602 h -0.01156 C 9.5467769,12.926818 9.6167769,8.9141062 9.6733389,8.0763015 9.6614639,8.024386 8.9330319,8.4422299 8.8376159,8.5052341 a 18.236631,17.648535 0 0 0 -2.44644,2.0282309 21.924624,21.217597 0 0 0 -2.33769,2.713011 c 0,0.0012 -7.29e-4,0.0026 -0.0011,0.0038 0,-0.0013 7.29e-4,-0.0026 0.0011,-0.0038 A 21.128797,20.447433 0 0 0 0.69444891,20.58571 c -0.01198,0.05252 -0.02208,0.106955 -0.03375,0.159879 -0.04708,0.213307 -0.216665,1.280245 -0.246352,1.512101 -0.0023,0.01784 -0.0033,0.03498 -0.0055,0.05282 a 23.860859,23.091392 0 0 0 -0.406247,3.342449 c 0,0.04133 -0.0025999954492,0.08226 -0.0025999954492,0.12369 C 4.1691455e-4,39.155011 11.208665,50 25.033975,50 c 12.381677,0 22.662327,-8.698411 24.67502,-20.124046 0.0424,-0.310081 0.07635,-0.621776 0.113749,-0.934579 0.497601,-4.154245 -0.05521,-8.520688 -1.623633,-12.172008 z M 19.345661,35.730508 c 0.117082,0.05413 0.227081,0.113307 0.347289,0.165222 0.005,0.0033 0.01188,0.0071 0.01698,0.01008 A 13.144795,12.720901 0 0 1 19.345662,35.730507 Z M 25.080304,21.12059 Z m 20.638488,-3.083678 -0.0033,-0.02349 c 0.0012,0.0086 0.0028,0.01754 0.0042,0.02611 z"
+                fill="url(#a)"
+                id="path39"
+                style="fill:url(#a);stroke-width:0.102473" />
+              <path
+                d="m 48.199086,16.769369 c -1.088013,-2.532668 -3.291642,-5.26695 -5.022045,-6.131166 1.408322,2.671882 2.22342,5.352131 2.534876,7.352439 0,-0.0058 0.0011,0.0048 0.0037,0.02278 0.0012,0.0086 0.0028,0.01754 0.0042,0.02611 2.361961,6.196589 1.0752,12.497816 -0.779057,16.34833 -2.868624,5.957677 -9.813987,12.06354 -20.684841,11.765757 C 12.510696,45.831743 2.1634829,37.397951 0.23193591,26.351752 c -0.351977,-1.74194 0,-2.626418 0.177082,-4.040736 -0.215728,1.090325 -0.297915,1.405245 -0.406247,3.342448 0,0.04133 -0.002599995,0.08226 -0.002599995,0.12369 C 3.7891455e-4,39.155012 11.208627,50.000001 25.033937,50.000001 c 12.381677,0 22.662327,-8.698411 24.67502,-20.124046 0.0424,-0.310081 0.07635,-0.621776 0.113749,-0.934579 0.497601,-4.154245 -0.05521,-8.520688 -1.623633,-12.172008 z"
+                fill="url(#b)"
+                id="path40"
+                style="fill:url(#b);stroke-width:0.102473" />
+              <path
+                d="m 48.199086,16.769369 c -1.088013,-2.532668 -3.291642,-5.26695 -5.022045,-6.131166 1.408322,2.671882 2.22342,5.352131 2.534876,7.352439 0,-0.0058 0.0011,0.0048 0.0037,0.02278 0.0012,0.0086 0.0028,0.01754 0.0042,0.02611 2.361961,6.196589 1.0752,12.497816 -0.779057,16.34833 -2.868624,5.957677 -9.813987,12.06354 -20.684841,11.765757 C 12.510696,45.831743 2.1634829,37.397951 0.23193591,26.351752 c -0.351977,-1.74194 0,-2.626418 0.177082,-4.040736 -0.215728,1.090325 -0.297915,1.405245 -0.406247,3.342448 0,0.04133 -0.002599995,0.08226 -0.002599995,0.12369 C 3.7891455e-4,39.155012 11.208627,50.000001 25.033937,50.000001 c 12.381677,0 22.662327,-8.698411 24.67502,-20.124046 0.0424,-0.310081 0.07635,-0.621776 0.113749,-0.934579 0.497601,-4.154245 -0.05521,-8.520688 -1.623633,-12.172008 z"
+                fill="url(#c)"
+                id="path41"
+                style="fill:url(#c);stroke-width:0.102473" />
+              <path
+                d="m 36.033658,19.616856 c 0.05458,0.0371 0.104166,0.07399 0.15552,0.110888 A 13.615104,13.176043 0 0 0 33.865237,16.793058 C 26.083526,9.2631998 31.824732,0.46620062 32.792954,0.01942523 c 0.0028,-0.003629 0.0086,-0.01179438 0.01042,-0.01370971 -6.288493,3.56412238 -8.42181,10.15738548 -8.617851,13.45608348 0.291665,-0.01956 0.582496,-0.04325 0.879369,-0.04325 4.692776,0 8.780037,2.496983 10.96877,6.198303 z"
+                fill="url(#d)"
+                id="path42"
+                style="fill:url(#d);stroke-width:0.102473" />
+              <path
+                d="m 25.080617,21.120288 c -0.04094,0.602622 -2.241025,2.680753 -3.010394,2.680753 -7.118591,0 -8.274103,4.166845 -8.274103,4.166845 0.31531,3.509082 2.839666,6.398707 5.896934,7.927743 0.139478,0.06976 0.280623,0.132763 0.421872,0.195061 a 13.829894,13.383907 0 0 0 0.735306,0.290928 11.118977,10.760412 0 0 0 3.257371,0.607966 c 12.476988,0.566332 14.894261,-14.434918 5.890059,-18.791179 2.30592,-0.388106 4.699444,0.509376 6.0361,1.418048 -2.188733,-3.701018 -6.275993,-6.198 -10.968666,-6.198 -0.296873,0 -0.5876,0.02369 -0.879368,0.04325 a 12.525842,12.121907 0 0 0 -6.889739,2.569361 c 0.381664,0.312501 0.812494,0.730244 1.720195,1.595569 1.698112,1.619662 6.055162,3.296884 6.064433,3.493659 z"
+                fill="url(#e)"
+                id="path43"
+                style="fill:url(#e);stroke-width:0.102473" />
+              <path
+                d="m 25.080617,21.120288 c -0.04094,0.602622 -2.241025,2.680753 -3.010394,2.680753 -7.118591,0 -8.274103,4.166845 -8.274103,4.166845 0.31531,3.509082 2.839666,6.398707 5.896934,7.927743 0.139478,0.06976 0.280623,0.132763 0.421872,0.195061 a 13.829894,13.383907 0 0 0 0.735306,0.290928 11.118977,10.760412 0 0 0 3.257371,0.607966 c 12.476988,0.566332 14.894261,-14.434918 5.890059,-18.791179 2.30592,-0.388106 4.699444,0.509376 6.0361,1.418048 -2.188733,-3.701018 -6.275993,-6.198 -10.968666,-6.198 -0.296873,0 -0.5876,0.02369 -0.879368,0.04325 a 12.525842,12.121907 0 0 0 -6.889739,2.569361 c 0.381664,0.312501 0.812494,0.730244 1.720195,1.595569 1.698112,1.619662 6.055162,3.296884 6.064433,3.493659 z"
+                fill="url(#f)"
+                id="path44"
+                style="fill:url(#f);stroke-width:0.102473" />
+              <path
+                d="m 16.128289,15.225312 a 25.420847,24.601074 0 0 1 0.518851,0.332662 11.59762,11.223619 0 0 1 -0.07021,-5.9205796 c -2.571647,1.1331676 -4.57184,2.9244026 -6.025996,4.5060596 0.120312,-0.0033 3.75143,-0.06653 5.577353,1.081858 z"
+                fill="url(#g)"
+                id="path45"
+                style="fill:url(#g);stroke-width:0.102473" />
+              <path
+                d="M 0.23195291,26.351753 C 2.1634999,37.397952 12.510713,45.831744 24.255936,46.15362 35.12679,46.451403 42.072153,40.345137 44.940777,34.387863 46.79493,30.537046 48.081795,24.236626 45.719834,18.039533 l -8.33e-4,-0.0026 -0.0033,-0.02349 c -0.0026,-0.01794 -0.0042,-0.02863 -0.0037,-0.02278 0,0.0039 0.0016,0.01371 0.0049,0.04032 0.88791,5.611003 -2.061442,11.046803 -6.671928,14.722216 l -0.01385,0.03155 c -8.983786,7.07895 -17.580491,4.270979 -19.321102,3.121581 A 15.011135,14.527055 0 0 1 19.34544,35.730624 c -5.237668,-2.422285 -7.401402,-7.04014 -6.937447,-11.000433 -4.4225701,0 -5.9305791,-3.609788 -5.9305791,-3.609788 0,0 3.9706981,-2.739825 9.2038871,-0.356956 4.846838,2.206961 9.398679,0.357158 9.399199,0.356956 -0.0093,-0.196774 -4.36632,-1.873997 -6.064849,-3.493557 -0.907597,-0.865325 -1.338531,-1.282564 -1.720195,-1.595569 a 7.4327557,7.1930635 0 0 0 -0.648433,-0.473792 29.471545,28.521144 0 0 0 -0.51885,-0.332662 c -1.825819,-1.14839 -5.457042,-1.085184 -5.577353,-1.08216 H 10.53917 C 9.5467769,12.926213 9.6167769,8.9135013 9.6733389,8.0756967 9.6614639,8.0237812 8.9330319,8.4416251 8.8376159,8.5046293 a 18.236631,17.648535 0 0 0 -2.44644,2.0282307 21.924624,21.217597 0 0 0 -2.33769,2.713616 c 0,0.0012 -7.29e-4,0.0026 -0.0011,0.0038 0,-0.0013 7.29e-4,-0.0026 0.0011,-0.0038 A 21.128797,20.447433 0 0 0 0.69444891,20.58571 c -0.01198,0.05252 -0.901035,3.814727 -0.462496,5.766043 z"
+                fill="url(#h)"
+                id="path46"
+                style="fill:url(#h);stroke-width:0.102473" />
+              <path
+                d="m 33.865237,16.792957 a 13.615104,13.176043 0 0 1 2.323941,2.934686 c 0.137811,0.100202 0.26656,0.200101 0.37583,0.297581 5.675165,5.060497 2.701646,12.217775 2.479877,12.727857 4.610486,-3.675413 7.559838,-9.111214 6.671928,-14.722217 C 42.886106,11.203023 38.086246,8.4497904 34.166797,2.4550164 33.968882,2.1518906 33.770446,1.8479583 33.577114,1.5275946 a 7.6786913,7.4310682 0 0 1 -0.275623,-0.5012111 4.5520485,4.4052537 0 0 1 -0.374268,-0.95826862 0.06520783,0.06310501 0 0 0 -0.05687,-0.06491953 0.08520768,0.0824599 0 0 0 -0.04698,0 c -0.0035,0.00120968 -0.0087,0.00514114 -0.0125,0.00655244 -0.0055,0.0021169 -0.0125,0.0069557 -0.01833,0.01008067 -0.967805,0.44637216 -6.709011,9.24337134 1.0727,16.77312854 z"
+                fill="url(#i)"
+                id="path47"
+                style="fill:url(#i);stroke-width:0.102473" />
+              <path
+                d="m 36.565008,20.025224 c -0.10927,-0.09748 -0.238019,-0.197379 -0.37583,-0.297581 -0.05094,-0.0371 -0.100937,-0.07399 -0.15552,-0.110888 -1.336656,-0.908671 -3.73018,-1.806154 -6.0361,-1.418048 9.004202,4.356262 6.586929,19.357511 -5.890059,18.791179 a 11.118977,10.760412 0 0 1 -3.257371,-0.607965 14.011351,13.559512 0 0 1 -0.735307,-0.290928 c -0.141249,-0.0623 -0.282393,-0.125303 -0.421871,-0.195061 0.005,0.0033 0.01188,0.0071 0.01698,0.01008 1.740611,1.149197 10.337316,3.95737 19.321102,-3.12158 l 0.01385,-0.03155 c 0.221769,-0.509477 3.195288,-7.667057 -2.479877,-12.727655 z"
+                fill="url(#j)"
+                id="path48"
+                style="fill:url(#j);stroke-width:0.102473" />
+              <path
+                d="m 13.796016,27.967987 c 0,0 1.155512,-4.166846 8.274103,-4.166846 0.769577,0 2.969665,-2.07813 3.010394,-2.680753 0.04073,-0.602622 -4.552049,1.850005 -9.399199,-0.356956 -5.233189,-2.382869 -9.2038881,0.356956 -9.2038881,0.356956 0,0 1.508009,3.609788 5.9305791,3.609788 -0.46385,3.960293 1.699883,8.578652 6.937447,11.000433 0.117083,0.05413 0.227082,0.113306 0.347289,0.165222 -3.05706,-1.529137 -5.581415,-4.418762 -5.896725,-7.927844 z"
+                fill="url(#k)"
+                id="path49"
+                style="fill:url(#k);stroke-width:0.102473" />
+              <path
+                d="m 48.199086,16.769369 c -1.088013,-2.532668 -3.291642,-5.26695 -5.022045,-6.131166 1.408322,2.671882 2.22342,5.352131 2.534876,7.352439 0,0.0039 0.0016,0.01371 0.0049,0.04032 C 42.886106,11.203023 38.086246,8.4497904 34.166797,2.4550164 33.968882,2.1518906 33.770446,1.8479583 33.577114,1.5275946 a 7.6786913,7.4310682 0 0 1 -0.275623,-0.5012111 4.5520485,4.4052537 0 0 1 -0.374268,-0.95826862 0.06520783,0.06310501 0 0 0 -0.05687,-0.06491953 0.08520768,0.0824599 0 0 0 -0.04698,0 c -0.0035,0.00120968 -0.0087,0.00514114 -0.0125,0.00655244 -0.0055,0.0021169 -0.0125,0.0069557 -0.01833,0.01008067 0.0028,-0.003629 0.0086,-0.01179439 0.01042,-0.01370971 -6.288503,3.56412235 -8.42182,10.15738525 -8.61786,13.45608425 0.291664,-0.01956 0.582495,-0.04325 0.879368,-0.04325 4.692985,0 8.780245,2.496982 10.968666,6.198 -1.336656,-0.908672 -3.73018,-1.806154 -6.036099,-1.418048 9.004201,4.356261 6.586928,19.357511 -5.89006,18.791179 A 11.118977,10.760412 0 0 1 20.849607,36.382119 14.011351,13.559512 0 0 1 20.114301,36.09119 c -0.141249,-0.0623 -0.282394,-0.125302 -0.421872,-0.195061 0.005,0.0033 0.01188,0.0071 0.01698,0.01008 a 15.011135,14.527055 0 0 1 -0.364581,-0.175706 c 0.117083,0.05413 0.227082,0.113307 0.347289,0.165222 -3.057268,-1.529036 -5.581624,-4.418661 -5.896934,-7.927743 0,0 1.155512,-4.166846 8.274104,-4.166846 0.769577,0 2.969664,-2.07813 3.010393,-2.680753 -0.0093,-0.196774 -4.36632,-1.873997 -6.064849,-3.493557 -0.907597,-0.865325 -1.338532,-1.282564 -1.720195,-1.595569 a 7.4327557,7.1930635 0 0 0 -0.648433,-0.473792 11.59762,11.223619 0 0 1 -0.07021,-5.9205797 c -2.571647,1.1331677 -4.57184,2.9244027 -6.025995,4.5060597 h -0.01156 C 9.5460479,12.926516 9.6160479,8.9138037 9.6726099,8.0759991 9.6607349,8.0240836 8.9323029,8.4419275 8.8368869,8.5049317 a 18.236631,17.648535 0 0 0 -2.44644,2.0282313 21.924624,21.217597 0 0 0 -2.336961,2.713313 c 0,0.0012 -7.29e-4,0.0026 -0.0011,0.0038 0,-0.0013 7.29e-4,-0.0026 0.0011,-0.0038 A 21.128797,20.447433 0 0 0 0.69444891,20.58571 c -0.01198,0.05252 -0.02208,0.106955 -0.03375,0.159879 -0.04708,0.213307 -0.258956,1.295669 -0.288539,1.527827 -0.0023,0.01784 0.0022,-0.01774 0,0 a 29.121131,28.182031 0 0 0 -0.369164,3.380049 c 0,0.04133 -0.002599995,0.08226 -0.002599995,0.12369 0,13.377858 11.208248085,24.222847 25.033558085,24.222847 12.381677,0 22.662327,-8.698411 24.67502,-20.124046 0.0424,-0.310081 0.07635,-0.621776 0.113749,-0.934579 0.497601,-4.154245 -0.05521,-8.520688 -1.623633,-12.172008 z m -2.483419,1.244055 c 0.0012,0.0086 0.0028,0.01754 0.0042,0.02611 l -8.33e-4,-0.0026 z"
+                fill="url(#l)"
+                id="path50"
+                style="fill:url(#l);stroke-width:0.102473" />
+            </svg>
+          </div>
+          <h3>Firefox Add-on</h3>
+        </div>
+        <p>Install from Mozilla Add-ons. Works in Firefox on all platforms - live exchange rates, 170+ currencies, no ads.</p>
+        <span class="btn-ext">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Add to Firefox
+        </span>
+      </a>
+
+      <a class="ext-card" href="https://chromewebstore.google.com/detail/%C3%B6tek-currency-converter/ckjlhooofmddbpjkhbgebdjlhdihengp" target="_blank" rel="noopener">
+        <div class="ext-info">
+          <div class="ext-icon">
+            <!-- Chrome wheel icon -->
+            <svg viewBox="0 0 48 48" fill="none">
+              <path d="M24 24 L24 2 A22 22 0 0 1 43.05 35 Z" fill="#EA4335"/>
+              <path d="M24 24 L43.05 35 A22 22 0 0 1 4.95 35 Z" fill="#34A853"/>
+              <path d="M24 24 L4.95 35 A22 22 0 0 1 24 2 Z" fill="#FBBC04"/>
+              <circle cx="24" cy="24" r="10" fill="white"/>
+              <circle cx="24" cy="24" r="7.5" fill="#4285F4"/>
+            </svg>
+          </div>
+          <h3>Chrome · Edge · Brave</h3>
+        </div>
+        <p>Available on the Chrome Web Store. Works on any Chromium-based browser - same live rates, one-click install.</p>
+        <span class="btn-ext">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Add to Chrome
+        </span>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- DOWNLOAD CTA -->
+<div class="cta-band" id="download">
+  <h2>Ready to use it?</h2>
+  <p>Free download · No account · Works offline after first fetch</p>
+  <div class="cta-btn-row">
+    <a class="btn-download-white" href="https://otek.today/files/otek-doviz-converter_1.0.14_amd64.deb">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Download for Linux
+    </a>
+    <a class="btn-download-white-outline" href="https://otek.today/files/today.otek.doviz_converter-1.0.14.apk">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Download for Android
+    </a>
+  </div>
+</div>
+<script>
+  var t = Date.now();
+  document.querySelectorAll(`a[href*="/files/"], img[src*="/files/"]`).forEach(function(el){
+    if (el.href) el.href = el.href + `?t=` + t;
+    if (el.src)  el.src  = el.src  + `?t=` + t;
+  });
+</script>
+<!-- FOOTER -->
+<footer>
+  Built by <a href="https://otek.today">Ömer Teknoloji</a> ·
+  Powered by <a href="https://xe.otek.today">xe.otek.today</a> ·
+  Flutter · Linux · Android
+</footer>
+
+</body>
+</html>
